@@ -35,3 +35,9 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ```
+
+### Collect static
+```bash
+python manage.py collectstatic
+```
+Must be executed after every change in static files, and when cloning the project.
