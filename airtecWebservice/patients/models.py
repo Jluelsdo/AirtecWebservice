@@ -1,10 +1,6 @@
 #Since the form is used through german speaking countries, all fields are in german.
 from django.db import models
 
-
-
-
-
 class Patient(models.Model):
     """
     Allgemeine Patienteninformationen.
@@ -25,7 +21,7 @@ class Patient(models.Model):
     prothese = models.CharField(max_length=100, blank=True, null=True)
 
     abdruck_zeitpunkt = models.DateTimeField(blank=True, null=True)
-    abdruck_ort = models.CharField(selection=((1, 'im Labor'), (2, 'in der Klinik'), (3, 'beim Patienten')), max_length=1)
+    abdruck_ort = models.CharField(choices=((1, 'im Labor'), (2, 'in der Klinik'), (3, 'beim Patienten')), max_length=1, null=True, blank=True)
 
 class Uebergabe(models.Model):
     abholung_zeitpunkt = models.DateTimeField()
@@ -34,7 +30,7 @@ class Uebergabe(models.Model):
 
 class Lieferung(models.Model):
     lieferung_datum = models.DateField()
-    lieferung_art = models.CharField(selection=((1, 'UPS'), (2, 'DHL'), (3, 'Lieferung'), (4, 'Abholung')), max_length=1)
+    lieferung_art = models.CharField(choices=((1, 'UPS'), (2, 'DHL'), (3, 'Lieferung'), (4, 'Abholung')), max_length=1)
     alternative_lieferadresse = models.CharField(max_length=100, blank=True, null=True)
 
 
@@ -42,6 +38,7 @@ class Maske(models.Model):
     """
     Digital twin of the mask.
     """
+    masken_id = models.CharField(max_length=100, unique=True)
     masken_typ = models.CharField(max_length=100)
     anschluss = models.CharField(choices=((1, '15'), (2, '22')), max_length=1)
     # Gerätetyp Todo: Erstelle ein Auswahl-Feld, sobald bekannt ist, welche Gerätetypen existieren.
@@ -51,12 +48,83 @@ class Maske(models.Model):
     druck_mbar = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     material_shore_lot = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-    gaensegurgeln_select = ((1, ))
+    gaensegurgeln_select = (
+        (8811, '13cm, 15'),
+        (8812, '13cm, 22'),
+        (8813, '15cm, 15, PV'),
+        (8814, '20cm, 15, PV'),
+        (8821, '20cm, 15'),
+        (8754, 'Silikonadapter'),
+        (1, 'sonstige'),
+        )
+    gaensegurgeln = models.CharField(choices=gaensegurgeln_select, max_length=1)
+    ganesegurgel_sonstige = models.CharField(max_length=100, blank=True, null=True)
+
+    tuben_select = (
+        (1, 6),
+        (2, 6.5),
+        (3, 8)
+        )
+    tuben = models.CharField(choices=tuben_select, max_length=1)
+
+    konnektoren_select = (
+        (8721, '15 mm'),
+        (8722, '22 mm'),
+        (8723, 'Rückatemsperrung'),
+        (8752, 'Doppelnippel'),
+        (8702, 'Titrationsadapter'),
+        (1, 'sonstige')
+        )
+    konnektoren = models.CharField(choices=konnektoren_select, max_length=4)
+    konnektoren_sonstige = models.CharField(max_length=100, blank=True, null=True)
+
+    ausatemventil_select = (
+        (8901, 'Respironics'),
+        (8902, 'Weinmann Sf'),
+        (8912, 'Schalldämpfer'),
+        (8922, 'F&P'),
+        (8923, 'F&P Aclaim FF'),
+        (1, 'sonstige')
+        )
+    ausatemventil = models.CharField(choices=ausatemventil_select, max_length=4)
+    ausatemventil_sonstige = models.CharField(max_length=100, blank=True, null=True)
+
+    kopf_Mund_Baender_select = (
+        ('8652S', 'Full-Face Band'),
+        ('8652', 'Full-Face Band'),
+        ('8653', 'Full-Face Band'),
+        ('8642', 'EasyFit, 5 P."M"'),
+        ('8154', 'Kopfband'),
+        ('8120', 'Endlosband'),
+        ('8132', 'Kopfband (3P.)'),
+        ('8133', 'Kopfband (3P.)'),
+        ('8134', 'Kopfband (3P.)'),
+        ('8554', 'F&P Aclaim FF'),
+        ('2', 'Kopfhaube'),
+        ('1', 'sonstige')
+        )
+    kopf_Mund_Baender = models.CharField(choices=kopf_Mund_Baender_select, max_length=5)
+    kopf_Mund_Baender_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
     patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
     hartschale = models.BooleanField(default=False)
     uebergabe = models.OneToOneField(Uebergabe, on_delete=models.CASCADE, null=True, blank=True)
     lieferung = models.OneToOneField(Lieferung, on_delete=models.CASCADE, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.gaensegurgeln != 'sonstige':
+            self.other_field = ''
+        
+        if self.konnektoren != 'sonstige':
+            self.konnektoren_sonstige = ''
+
+        if self.ausatemventil_select != 'sonstige':
+            self.ausatemventil_sonstige = ''
+
+        if self.kopf_Mund_Baender != 'sonstige':
+            self.kopf_Mund_Baender_sonstige = ''
+
+        super().save(*args, **kwargs)
 
 class Versicherungsunternehmen(models.Model):
     """
