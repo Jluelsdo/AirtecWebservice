@@ -1,8 +1,54 @@
 <!DOCTYPE html>
+<html>
 <head>
+    {% load static %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'create_patient' %}">Add Patient</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <!--If user is logged in show logout otherwise show login-->
+        {% if user.is_authenticated %}
+        <li class="nav-item ms-auto">
+          <a class="nav-link" href="#">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item ms-auto">
+          <a class="nav-link" href="">Login</a>
+        </li>
+        {% endif %}
+    </ul>
     {% block content %}{% endblock %}
 </body>
+
+<script>
+const navLinks = document.querySelectorAll('.nav-link');
+navLinks.forEach(link => {
+    if (link.href === window.location.href && link.getAttribute('href') !== '') {
+        link.classList.add('active');
+    }
+    link.addEventListener('click', function(event) {
+        if (link.getAttribute('href') === '') {
+            return;
+        }
+        event.preventDefault();
+        navLinks.forEach(link => link.classList.remove('active'));
+        this.classList.add('active');
+        window.location.href = this.href;
+    });
+});
+</script>
+
 </html>
