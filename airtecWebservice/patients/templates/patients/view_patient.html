@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}View Patient{% endblock %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h1 class="card-title mb-0">Patient Information</h1>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>ID:</th>
+                                    <td>{{ patient.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Patient ID:</th>
+                                    <td>{{ patient.patient_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Größe:</th>
+                                    <td>{{ patient.größe }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gewicht:</th>
+                                    <td>{{ patient.gewicht }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Geschlecht:</th>
+                                    <td>{{ patient.geschlecht }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Alter:</th>
+                                    <td>{{ patient.alter }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Andere Informationen:</th>
+                                    <td>{{ patient.andere_informationen }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gesichtstyp:</th>
+                                    <td>{{ patient.gesichtstyp }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <script type="module" src="../javascript/main.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -14,14 +14,14 @@ class Patient(models.Model):
     geschlecht = models.CharField(max_length=10)
     alter = models.PositiveIntegerField(blank=True, null=True)
     andere_informationen = models.TextField(blank=True)
-    gesichtstyp = models.CharField(choices=((1, 'pyknisch'), (2, 'athletisch'), (3, 'leptosom')), max_length=1)
+    gesichtstyp = models.CharField(choices=(('1', 'pyknisch'), ('2', 'athletisch'), ('3', 'leptosom')), max_length=1)
 
     # Todo: In Betracht ziehen, eine eigene Tabelle für Prothesenträger hinzuzufügen
     prothesenträger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
 
     abdruck_zeitpunkt = models.DateTimeField(blank=True, null=True)
-    abdruck_ort = models.CharField(choices=((1, 'im Labor'), (2, 'in der Klinik'), (3, 'beim Patienten')), max_length=1, null=True, blank=True)
+    abdruck_ort = models.CharField(choices=(('1', 'im Labor'), ('2', 'in der Klinik'), ('3', 'beim Patienten')), max_length=1, null=True, blank=True)
 
 class Uebergabe(models.Model):
     abholung_zeitpunkt = models.DateTimeField()
@@ -30,7 +30,7 @@ class Uebergabe(models.Model):
 
 class Lieferung(models.Model):
     lieferung_datum = models.DateField()
-    lieferung_art = models.CharField(choices=((1, 'UPS'), (2, 'DHL'), (3, 'Lieferung'), (4, 'Abholung')), max_length=1)
+    lieferung_art = models.CharField(choices=(('1', 'UPS'), ('2', 'DHL'), ('3', 'Lieferung'), ('4', 'Abholung')), max_length=1)
     alternative_lieferadresse = models.CharField(max_length=100, blank=True, null=True)
 
 
@@ -49,15 +49,15 @@ class Maske(models.Model):
     material_shore_lot = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     gaensegurgeln_select = (
-        (8811, '13cm, 15'),
-        (8812, '13cm, 22'),
-        (8813, '15cm, 15, PV'),
-        (8814, '20cm, 15, PV'),
-        (8821, '20cm, 15'),
-        (8754, 'Silikonadapter'),
-        (1, 'sonstige'),
+        ('8811', '13cm, 15'),
+        ('8812', '13cm, 22'),
+        ('8813', '15cm, 15, PV'),
+        ('8814', '20cm, 15, PV'),
+        ('8821', '20cm, 15'),
+        ('8754', 'Silikonadapter'),
+        ('1', 'sonstige'),
         )
-    gaensegurgeln = models.CharField(choices=gaensegurgeln_select, max_length=1)
+    gaensegurgeln = models.CharField(choices=gaensegurgeln_select, max_length=4)
     ganesegurgel_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
     tuben_select = (
@@ -65,26 +65,26 @@ class Maske(models.Model):
         (2, 6.5),
         (3, 8)
         )
-    tuben = models.CharField(choices=tuben_select, max_length=1)
+    tuben = models.FloatField(choices=tuben_select, max_length=1)
 
     konnektoren_select = (
-        (8721, '15 mm'),
-        (8722, '22 mm'),
-        (8723, 'Rückatemsperrung'),
-        (8752, 'Doppelnippel'),
-        (8702, 'Titrationsadapter'),
-        (1, 'sonstige')
+        ('8721', '15 mm'),
+        ('8722', '22 mm'),
+        ('8723', 'Rückatemsperrung'),
+        ('8752', 'Doppelnippel'),
+        ('8702', 'Titrationsadapter'),
+        ('1', 'sonstige')
         )
     konnektoren = models.CharField(choices=konnektoren_select, max_length=4)
     konnektoren_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
     ausatemventil_select = (
-        (8901, 'Respironics'),
-        (8902, 'Weinmann Sf'),
-        (8912, 'Schalldämpfer'),
-        (8922, 'F&P'),
-        (8923, 'F&P Aclaim FF'),
-        (1, 'sonstige')
+        ('8901', 'Respironics'),
+        ('8902', 'Weinmann Sf'),
+        ('8912', 'Schalldämpfer'),
+        ('8922', 'F&P'),
+        ('8923', 'F&P Aclaim FF'),
+        ('1', 'sonstige')
         )
     ausatemventil = models.CharField(choices=ausatemventil_select, max_length=4)
     ausatemventil_sonstige = models.CharField(max_length=100, blank=True, null=True)
