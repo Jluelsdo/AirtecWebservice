@@ -2,8 +2,12 @@ from django.shortcuts import render
 
 from django.views.generic import TemplateView, DetailView
 from django.views.generic.edit import CreateView
+from django.conf import settings
 
 from .models import Patient
+from django.http import FileResponse
+from django.conf import settings
+import os
 
 class HomeView(TemplateView):
     template_name = 'patients/home.html'
@@ -25,3 +29,10 @@ class ViewPatient(DetailView):
     slug_field = 'id'
     slug_url_kwarg = 'id'
 
+
+def stl_view(request):
+    """
+    Proof of concept for serving STL files.
+    """
+    stl_path = os.path.join(settings.BASE_DIR, 'patients/beispielscan.stl')
+    return FileResponse(open(stl_path, 'rb'), content_type='application/octet-stream')
