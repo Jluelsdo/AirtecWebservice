@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-111+^x-!(_5qrd4$&g(=yfh(8=)u3$33b1(ng*e!9r*85p0^2(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://airtecwebservice.ey.r.appspot.com','localhost']
+ALLOWED_HOSTS = ['airtecwebservice.ey.r.appspot.com','127.0.0.1']
 
 
 # Application definition
