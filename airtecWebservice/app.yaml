@@ -2,6 +2,7 @@ runtime: python38
 entrypoint: gunicorn -b :$PORT airtecWebservice.wsgi
 env_variables:
   DJANGO_SETTINGS_MODULE: 'airtecWEbservice.settings'
+  APPENGINE_URL : 'https://airtecwebservice.uc.r.appspot.com'
 handlers:
 - url: /static
   script: auto
