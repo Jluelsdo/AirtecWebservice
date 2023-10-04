@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from .models import Patient
@@ -25,3 +25,13 @@ class ListPatientView(ListView):
     model = Patient
     context_object_name = 'patients'
     ordering = ['patient_id']
+class DetailPatientView(DetailView):
+    """Display details of a patient."""
+    template_name = 'patients/detail.html'
+    model = Patient
+    fields = ['patient_id', 'größe', 'gewicht', 'geschlecht',
+              'alter', 'andere_informationen', 'gesichtstyp',
+              'prothesenträger', 'prothese', 'abdruck_zeitpunkt',
+              'abdruck_ort']
+    slug_field = 'patient_id'
+    slug_url_kwarg = 'patient_id'
