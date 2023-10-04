@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.views.generic.edit import CreateView
 
 from .models import Patient
@@ -18,3 +18,14 @@ class CreatePatientView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+
+class DetailPatientView(DetailView):
+    """Display details of a patient."""
+    template_name = 'patients/detail.html'
+    model = Patient
+    fields = ['patient_id', 'größe', 'gewicht', 'geschlecht',
+              'alter', 'andere_informationen', 'gesichtstyp',
+              'prothesenträger', 'prothese', 'abdruck_zeitpunkt',
+              'abdruck_ort']
+    slug_field = 'patient_id'
+    slug_url_kwarg = 'patient_id'
