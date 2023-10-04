@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView
 
 from .models import Patient
@@ -18,3 +18,10 @@ class CreatePatientView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+
+class ListPatientView(ListView):
+    """List all patients."""
+    template_name = 'patients/list_patients.html'
+    model = Patient
+    context_object_name = 'patients'
+    ordering = ['patient_id']

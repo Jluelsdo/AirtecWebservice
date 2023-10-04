@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<ul class="list-group">
+{% for patient in patients %}
+    <li class="list-group-item" aria-current="true">{{patient.patient_id}}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
