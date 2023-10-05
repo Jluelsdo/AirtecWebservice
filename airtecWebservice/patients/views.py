@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
-from .models import Patient
+from .models import Patient, Maske
 
 class HomeView(TemplateView):
     template_name = 'patients/home.html'
@@ -11,7 +11,7 @@ class HomeView(TemplateView):
 class CreatePatientView(CreateView):
     """Create a new patient, display a success message when done."""
     template_name = 'patients/create_patient.html'
-    success_url = '/patients/'
+    success_url = '/patients/{patient_id}'
     model = Patient
     fields = ['patient_id', 'größe', 'gewicht', 'geschlecht', 'alter',
               'andere_informationen', 'gesichtstyp', 'prothesenträger',
@@ -45,3 +45,22 @@ class DetailPatientView(DetailView):
               'abdruck_ort']
     slug_field = 'patient_id'
     slug_url_kwarg = 'patient_id'
+
+
+
+class CreateMaskView(CreateView):
+    """Create a new mask, forward to Patientdetailpage when done. Use the patient id for foreign key."""
+    template_name = 'patients/create_mask.html'
+    success_url = '/patients/{maske.patient.patient_id}'
+    model = Maske
+    fields = ['masken_id', 'masken_typ', 'anschluss', 'gerätetyp',
+              'lieferant', 'druck_mbar', 'material_shore_lot',
+              'gaensegurgeln', 'ganesegurgel_sonstige', 'tuben',
+              'konnektoren', 'konnektoren_sonstige', 'ausatemventil',
+              'ausatemventil_sonstige', 'kopf_Mund_Baender', 'kopf_Mund_Baender_sonstige',
+              'hartschale']
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        form.instance.patient = Patient.objects.get(patient_id=self.kwargs['patient_id'])
+        return super().form_valid(form)

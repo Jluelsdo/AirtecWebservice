@@ -24,6 +24,9 @@ class Patient(models.Model):
     abdruck_ort = models.CharField(choices=(('im Labor', 'im Labor'), ('in der Klinik', 'in der Klinik'), ('beim Patienten', 'beim Patienten')),
                                     max_length=14, null=True, blank=True)
 
+    def __str__(self):
+        return self.patient_id
+
 class Uebergabe(models.Model):
     abholung_zeitpunkt = models.DateTimeField()
     lieferung_zeitpunkt = models.DateTimeField()
