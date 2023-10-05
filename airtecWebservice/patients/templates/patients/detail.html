@@ -1,17 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ patient.patient_id }}</h1>
-    <p>Größe: {{ patient.größe }}</p>
-    <p>Gewicht: {{ patient.gewicht }}</p>
+    <h1>ID: {{ patient.patient_id }}</h1>
+    <hr>
+    <p>Größe: {{ patient.größe }} cm</p>
+    <hr>
+    <p>Gewicht: {{ patient.gewicht }} kg</p>
+    <hr>
     <p>Geschlecht: {{ patient.geschlecht }}</p>
-    <p>Alter: {{ patient.alter }}</p>
+    <hr>
+    <p>Alter: {{ patient.alter }} Jahre</p>
+    <hr>
     <p>Andere Informationen: {{ patient.andere_informationen }}</p>
+    <hr>
     <p>Gesichtstyp: {{ patient.gesichtstyp }}</p>
+    <hr>
     <p>Prothesenträger: {{ patient.prothesenträger }}</p>
+    <hr>
     <p>Prothese: {{ patient.prothese }}</p>
+    <hr>
     <p>Abdruck Zeitpunkt: {{ patient.abdruck_zeitpunkt }}</p>
+    <hr>
     <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
+    <hr>
     <p>Maske: {{ patient.maske }}</p>
 
 {% endblock %}
