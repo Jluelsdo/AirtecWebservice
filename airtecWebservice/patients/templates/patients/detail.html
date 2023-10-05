@@ -11,17 +11,28 @@
         </h2>
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingPatient" data-bs-parent="#accordionPatientInformation">
           <div class="accordion-body">
-            <p>Größe: {{ patient.größe }}</p>
-            <p>Gewicht: {{ patient.gewicht }}</p>
+            <hr>
+            <p>Größe: {{ patient.größe }} cm</p>
+            <hr>
+            <p>Gewicht: {{ patient.gewicht }} kg</p>
+            <hr>
             <p>Geschlecht: {{ patient.geschlecht }}</p>
-            <p>Alter: {{ patient.alter }}</p>
+            <hr>
+            <p>Alter: {{ patient.alter }} Jahre</p>
+            <hr>
             <p>Andere Informationen: {{ patient.andere_informationen }}</p>
+            <hr>
             <p>Gesichtstyp: {{ patient.gesichtstyp }}</p>
+            <hr>
             <p>Prothesenträger: {{ patient.prothesenträger }}</p>
+            <hr>
             <p>Prothese: {{ patient.prothese }}</p>
+            <hr>
             <p>Abdruck Zeitpunkt: {{ patient.abdruck_zeitpunkt }}</p>
+            <hr>
             <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
-            <p>Maske: {{ patient.maske }}</p>        </div>
+            <hr>
+            <p>Maske: {{ patient.maske }}</p>
         </div>
     </div>
     <div class="accordion-item">
