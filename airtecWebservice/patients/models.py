@@ -14,14 +14,15 @@ class Patient(models.Model):
     geschlecht = models.CharField(max_length=10)
     alter = models.PositiveIntegerField(blank=True, null=True)
     andere_informationen = models.TextField(blank=True)
-    gesichtstyp = models.CharField(choices=((1, 'pyknisch'), (2, 'athletisch'), (3, 'leptosom')), max_length=1)
+    gesichtstyp = models.CharField(choices=(('pyknisch', 'pyknisch'), ('athletisch', 'athletisch'), ('leptosom', 'leptosom')), max_length=14, default='pyknisch')
 
     # Todo: In Betracht ziehen, eine eigene Tabelle für Prothesenträger hinzuzufügen
     prothesenträger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
 
     abdruck_zeitpunkt = models.DateTimeField(blank=True, null=True)
-    abdruck_ort = models.CharField(choices=((1, 'im Labor'), (2, 'in der Klinik'), (3, 'beim Patienten')), max_length=1, null=True, blank=True)
+    abdruck_ort = models.CharField(choices=(('im Labor', 'im Labor'), ('in der Klinik', 'in der Klinik'), ('beim Patienten', 'beim Patienten')),
+                                    max_length=14, null=True, blank=True)
 
 class Uebergabe(models.Model):
     abholung_zeitpunkt = models.DateTimeField()
