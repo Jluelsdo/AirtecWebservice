@@ -32,7 +32,6 @@
             <hr>
             <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
             <hr>
-            <p>Maske: {{ patient.maske }}</p>
         </div>
     </div>
     <div class="accordion-item">
@@ -44,6 +43,7 @@
         <div id="collapseMask" class="accordion-collapse collapse" aria-labelledby="headingMask" data-bs-parent="#accordionPatientInformation">
           <div class="accordion-body">
             {{patient.mask}}
+            {% include 'patients/mask_detail.html' with masken=patient.masken %}
             <a class="btn btn-primary" href="{% url 'create_mask' patient.patient_id%}">Create Mask</a>
         </div>
         </div>
