@@ -42,75 +42,78 @@ class Maske(models.Model):
     """
     Digital twin of the mask.
     """
+    # All select fields that get zipped
+    gaensegurgeln_select = [
+        '8811 13cm, 15',
+        '8812 13cm, 22',
+        '8813 15cm, 15, PV',
+        '8814 20cm, 15, PV',
+        '8821 20cm, 15',
+        '8754 Silikonadapter',
+        '1 sonstige',
+        ]
+    anschluss_select = [
+        '1, 15',
+        '2, 22'
+        ]
+    tuben_select = [
+        '1, 6',
+        '2, 6.5',
+        '3, 8'
+        ]
+    konnektoren_select = [
+        '8721, 15 mm',
+        '8722, 22 mm',
+        '8723, Rückatemsperrung',
+        '8752, Doppelnippel',
+        '8702, Titrationsadapter',
+        '1, sonstige'
+        ]
+    ausatemventil_select = [
+        '8901, Respironics',
+        '8902, Weinmann Sf',
+        '8912, Schalldämpfer',
+        '8922, F&P',
+        '8923, F&P Aclaim FF',
+        '1, sonstige'
+        ]
+    kopf_Mund_Baender_select = [
+        '8652S, Full-Face Band',
+        '8652, Full-Face Band',
+        '8653, Full-Face Band',
+        '8642, EasyFit, 5 P."M"',
+        '8154, Kopfband',
+        '8120, Endlosband',
+        '8132, Kopfband (3P.)',
+        '8133, Kopfband (3P.)',
+        '8134, Kopfband (3P.)',
+        '8554, F&P Aclaim FF',
+        '2, Kopfhaube',
+        '1, sonstige'
+        ]
+
     masken_id = models.CharField(max_length=100, unique=True)
     masken_typ = models.CharField(max_length=100)
-    anschluss = models.CharField(choices=((1, '15'), (2, '22')), max_length=1)
+    anschluss = models.CharField(choices=zip(anschluss_select, anschluss_select), max_length=5)
     # Gerätetyp Todo: Erstelle ein Auswahl-Feld, sobald bekannt ist, welche Gerätetypen existieren.
     gerätetyp = models.CharField(max_length=100)
     # Lieferant Todo: Erstelle entweder ein Auswahlfeld oder eine neue Tabelle für Lieferanten
     lieferant = models.CharField(max_length=100)
     druck_mbar = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     material_shore_lot = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-
-    gaensegurgeln_select = (
-        (8811, '13cm, 15'),
-        (8812, '13cm, 22'),
-        (8813, '15cm, 15, PV'),
-        (8814, '20cm, 15, PV'),
-        (8821, '20cm, 15'),
-        (8754, 'Silikonadapter'),
-        (1, 'sonstige'),
-        )
-    gaensegurgeln = models.CharField(choices=gaensegurgeln_select, max_length=1)
+    gaensegurgeln = models.CharField(choices=zip(gaensegurgeln_select, gaensegurgeln_select), max_length=19)
     ganesegurgel_sonstige = models.CharField(max_length=100, blank=True, null=True)
-
-    tuben_select = (
-        (1, 6),
-        (2, 6.5),
-        (3, 8)
-        )
-    tuben = models.CharField(choices=tuben_select, max_length=1)
-
-    konnektoren_select = (
-        (8721, '15 mm'),
-        (8722, '22 mm'),
-        (8723, 'Rückatemsperrung'),
-        (8752, 'Doppelnippel'),
-        (8702, 'Titrationsadapter'),
-        (1, 'sonstige')
-        )
-    konnektoren = models.CharField(choices=konnektoren_select, max_length=4)
+    tuben = models.CharField(choices=zip(tuben_select, tuben_select), max_length=6)
+    konnektoren = models.CharField(choices=zip(konnektoren_select, konnektoren_select), max_length=23)
     konnektoren_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
-    ausatemventil_select = (
-        (8901, 'Respironics'),
-        (8902, 'Weinmann Sf'),
-        (8912, 'Schalldämpfer'),
-        (8922, 'F&P'),
-        (8923, 'F&P Aclaim FF'),
-        (1, 'sonstige')
-        )
-    ausatemventil = models.CharField(choices=ausatemventil_select, max_length=4)
+    ausatemventil = models.CharField(choices=zip(ausatemventil_select,ausatemventil_select), max_length=19)
     ausatemventil_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
-    kopf_Mund_Baender_select = (
-        ('8652S', 'Full-Face Band'),
-        ('8652', 'Full-Face Band'),
-        ('8653', 'Full-Face Band'),
-        ('8642', 'EasyFit, 5 P."M"'),
-        ('8154', 'Kopfband'),
-        ('8120', 'Endlosband'),
-        ('8132', 'Kopfband (3P.)'),
-        ('8133', 'Kopfband (3P.)'),
-        ('8134', 'Kopfband (3P.)'),
-        ('8554', 'F&P Aclaim FF'),
-        ('2', 'Kopfhaube'),
-        ('1', 'sonstige')
-        )
-    kopf_Mund_Baender = models.CharField(choices=kopf_Mund_Baender_select, max_length=5)
+    kopf_Mund_Baender = models.CharField(choices=zip(kopf_Mund_Baender_select, kopf_Mund_Baender_select), max_length=22)
     kopf_Mund_Baender_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
-    patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+    patient = models.ForeignKey('Patient', on_delete=models.CASCADE, related_name='masken')
     hartschale = models.BooleanField(default=False)
     uebergabe = models.OneToOneField(Uebergabe, on_delete=models.CASCADE, null=True, blank=True)
     lieferung = models.OneToOneField(Lieferung, on_delete=models.CASCADE, null=True, blank=True)
