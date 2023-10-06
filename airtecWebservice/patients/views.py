@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
@@ -51,7 +52,6 @@ class DetailPatientView(DetailView):
 class CreateMaskView(CreateView):
     """Create a new mask, forward to Patientdetailpage when done. Use the patient id for foreign key."""
     template_name = 'patients/create_mask.html'
-    success_url = '/patients/{maske.patient.patient_id}'
     model = Maske
     fields = ['masken_id', 'masken_typ', 'anschluss', 'gerätetyp',
               'lieferant', 'druck_mbar', 'material_shore_lot',
@@ -64,3 +64,6 @@ class CreateMaskView(CreateView):
         form.instance.created_by = self.request.user
         form.instance.patient = Patient.objects.get(patient_id=self.kwargs['patient_id'])
         return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('detail', kwargs={'patient_id': self.kwargs['patient_id']})
