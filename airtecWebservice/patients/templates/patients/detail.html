@@ -1,27 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>ID: {{ patient.patient_id }}</h1>
-    <hr>
-    <p>Größe: {{ patient.größe }} cm</p>
-    <hr>
-    <p>Gewicht: {{ patient.gewicht }} kg</p>
-    <hr>
-    <p>Geschlecht: {{ patient.geschlecht }}</p>
-    <hr>
-    <p>Alter: {{ patient.alter }} Jahre</p>
-    <hr>
-    <p>Andere Informationen: {{ patient.andere_informationen }}</p>
-    <hr>
-    <p>Gesichtstyp: {{ patient.gesichtstyp }}</p>
-    <hr>
-    <p>Prothesenträger: {{ patient.prothesenträger }}</p>
-    <hr>
-    <p>Prothese: {{ patient.prothese }}</p>
-    <hr>
-    <p>Abdruck Zeitpunkt: {{ patient.abdruck_zeitpunkt }}</p>
-    <hr>
-    <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
-    <hr>
-    <p>Maske: {{ patient.maske }}</p>
+<h1>Patient: {{ patient.patient_id }}</h1>
+<div class="accordion" id="accordionPatientInformation">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingPatient">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Patient Information
+        </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingPatient" data-bs-parent="#accordionPatientInformation">
+          <div class="accordion-body">
+            <hr>
+            <p>Größe: {{ patient.größe }} cm</p>
+            <hr>
+            <p>Gewicht: {{ patient.gewicht }} kg</p>
+            <hr>
+            <p>Geschlecht: {{ patient.geschlecht }}</p>
+            <hr>
+            <p>Alter: {{ patient.alter }} Jahre</p>
+            <hr>
+            <p>Andere Informationen: {{ patient.andere_informationen }}</p>
+            <hr>
+            <p>Gesichtstyp: {{ patient.gesichtstyp }}</p>
+            <hr>
+            <p>Prothesenträger: {{ patient.prothesenträger }}</p>
+            <hr>
+            <p>Prothese: {{ patient.prothese }}</p>
+            <hr>
+            <p>Abdruck Zeitpunkt: {{ patient.abdruck_zeitpunkt }}</p>
+            <hr>
+            <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
+            <hr>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingMask">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMask" aria-expanded="false" aria-controls="collapseMask">
+            Patients Mask
+        </button>
+        </h2>
+        <div id="collapseMask" class="accordion-collapse collapse" aria-labelledby="headingMask" data-bs-parent="#accordionPatientInformation">
+          <div class="accordion-body">
+            {{patient.mask}}
+            {% include 'patients/mask_detail.html' with masken=patient.masken %}
+            <a class="btn btn-primary" href="{% url 'create_mask' patient.patient_id%}">Create Mask</a>
+        </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
