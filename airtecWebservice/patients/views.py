@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
+from django.urls import reverse
 
-from .models import Patient
+from .models import Patient, SensitivePatientData, Versicherungsunternehmen
 
 class HomeView(TemplateView):
     template_name = 'patients/home.html'
@@ -45,3 +46,92 @@ class DetailPatientView(DetailView):
               'abdruck_ort']
     slug_field = 'patient_id'
     slug_url_kwarg = 'patient_id'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Versuchen, sensiblen Patientendaten basierend auf patient_id abzurufen
+        try:
+            sensitive_data = SensitivePatientData.objects.get(patient_id=self.object.patient_id)
+            context['sensitive_data'] = sensitive_data
+        except SensitivePatientData.DoesNotExist:
+            context['sensitive_data'] = None
+
+        # Falls es sensible Patientendaten gibt, versuchen Sie, das zugehörige Versicherungsunternehmen abzurufen
+        if context['sensitive_data']:
+            try:
+                insurance_company = Versicherungsunternehmen.objects.get(pk=context['sensitive_data'].versicherungsunternehmen.pk)
+                context['insurance_company'] = insurance_company
+            except Versicherungsunternehmen.DoesNotExist:
+                context['insurance_company'] = None
+
+        # Hinzufügen der Liste der Versicherungsunternehmen zur Vorlage
+        context['versicherungsunternehmen_list'] = Versicherungsunternehmen.objects.all()
+
+        return context
+    def post(self, request, *args, **kwargs):
+        # Patientenobjekt abrufen
+        patient = self.get_object()
+        print(request.POST)
+
+        # Überprüfen, ob das Formular mit dem Namen "Versicherungsunternehmen" gesendet wurde
+        if 'Versicherungsunternehmen' in request.POST:
+            # Versicherungsunternehmen aus dem Formular abrufen
+            versicherungsunternehmen_id = request.POST['Versicherungsunternehmen']
+            print(versicherungsunternehmen_id)
+
+            try:
+                # Versicherungsunternehmen anhand der ID abrufen
+                versicherungsunternehmen = Versicherungsunternehmen.objects.get(pk=versicherungsunternehmen_id)
+            except Versicherungsunternehmen.DoesNotExist:
+                # Wenn das Versicherungsunternehmen nicht existiert, können Sie hier entsprechende Fehlerbehandlung hinzufügen.
+                pass
+
+            # Eintrag in SensitivePatientData erstellen oder aktualisieren
+            sensitive_data, created = SensitivePatientData.objects.get_or_create(patient_id=patient.patient_id)
+
+            # Setzen Sie das Versicherungsunternehmen-Feld, wenn ein gültiges Versicherungsunternehmen abgerufen wurde
+            if versicherungsunternehmen:
+                sensitive_data.versicherungsunternehmen = versicherungsunternehmen
+            else:
+                sensitive_data.versicherungsunternehmen = None  # oder den Standardwert, den Sie verwenden möchten
+
+            sensitive_data.save()
+            print(patient.patient_id)
+            print(versicherungsunternehmen)
+            print("HAAAAALLLOOOO")
+
+        # Weiterleitung zur Detailansicht des Patienten, um die Änderungen anzuzeigen
+        return redirect('detail', patient_id=patient.patient_id)
+class CreateInsuranceView(CreateView):
+    """Create a new insurance company, display a success message when done."""
+    template_name = 'insurance/create_insurance.html'
+    success_url = '/' 
+    model = Versicherungsunternehmen  
+    fields = ['versicherungsunternehmen', 'strasse', 'postleitzahl', 'stadt', 'telefon', 'fax_nummer']
+
+    def form_valid(self, form):
+        # Hier wird das ausgewählte Versicherungsunternehmen gespeichert
+        insurance_company = form.save()
+
+        # Überprüfen , ob eine patient_id in der Sitzung gespeichert ist
+        patient_id = self.request.session.get('patient_id')
+
+        if patient_id:
+            try:
+                # Hole die zugehörigen sensiblen Patientendaten
+                patient_data = SensitivePatientData.objects.get(patient_id=patient_id)
+                # Speichern des ausgewählten Versicherungsunternehmen
+                patient_data.versicherungsunternehmen = insurance_company
+                patient_data.save()
+            except SensitivePatientData.DoesNotExist:
+                pass  # Möglicherweise gibt es keine passenden sensiblen Patientendaten
+
+        return super().form_valid(form)
+    
+
+
+
+
+
+
+ 

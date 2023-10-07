@@ -1,27 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>ID: {{ patient.patient_id }}</h1>
-    <hr>
-    <p>Größe: {{ patient.größe }} cm</p>
-    <hr>
-    <p>Gewicht: {{ patient.gewicht }} kg</p>
-    <hr>
-    <p>Geschlecht: {{ patient.geschlecht }}</p>
-    <hr>
-    <p>Alter: {{ patient.alter }} Jahre</p>
-    <hr>
-    <p>Andere Informationen: {{ patient.andere_informationen }}</p>
-    <hr>
-    <p>Gesichtstyp: {{ patient.gesichtstyp }}</p>
-    <hr>
-    <p>Prothesenträger: {{ patient.prothesenträger }}</p>
-    <hr>
-    <p>Prothese: {{ patient.prothese }}</p>
-    <hr>
-    <p>Abdruck Zeitpunkt: {{ patient.abdruck_zeitpunkt }}</p>
-    <hr>
-    <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
-    <hr>
-    <p>Maske: {{ patient.maske }}</p>
+<h1>ID: {{ patient.patient_id }}</h1>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Personal details
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <p>Größe: {{ patient.größe }} cm</p>
+            <hr>
+            <p>Gewicht: {{ patient.gewicht }} kg</p>
+            <hr>
+            <p>Geschlecht: {{ patient.geschlecht }}</p>
+            <hr>
+            <p>Alter: {{ patient.alter }} Jahre</p>
+            <hr>
+            <p>Andere Informationen: {{ patient.andere_informationen }}</p>
+            <hr>
+            <p>Gesichtstyp: {{ patient.gesichtstyp }}</p>
+            <hr>
+            <p>Prothesenträger: {{ patient.prothesenträger }}</p>
+            <hr>
+            <p>Prothese: {{ patient.prothese }}</p>
+            <hr>
+            <p>Abdruck Zeitpunkt: {{ patient.abdruck_zeitpunkt }}</p>
+            <hr>
+            <p>Abdruck Ort: {{ patient.abdruck_ort }}</p>
+            <hr>
+            <p>Maske: {{ patient.maske }}</p>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+               Krankenkassendetails
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                {% if insurance_company %}
+                <h2>Versicherungsunternehmen</h2>
+                <p>Name: {{ insurance_company.versicherungsunternehmen }}</p>
+                <p>Adresse: {{ insurance_company.strasse }}, {{ insurance_company.postleitzahl }} {{ insurance_company.stadt }}</p>
+                <p>Telefon: {{ insurance_company.telefon }}</p>
+                <p>Fax: {{ insurance_company.fax_nummer }}</p>
+                {% else %}
+                <p>Kein Versicherungsunternehmen gefunden.</p>
+                <form method="POST" action="{% url 'detail' patient_id=patient.patient_id %}">
+                    {% csrf_token %}
+                    <label for="versicherungsunternehmen">Versicherungsunternehmen</label>
+                    <select name="Versicherungsunternehmen" id="Versicherungsunternehmen">
+                        <option value="" selected disabled>Wählen Sie ein Versicherungsunternehmen aus</option>
+                        {% for versicherung in versicherungsunternehmen_list %}
+                            <option value="{{ versicherung.id }}">{{ versicherung.versicherungsunternehmen }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Erstellen</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+<hr>
+
 {% endblock %}

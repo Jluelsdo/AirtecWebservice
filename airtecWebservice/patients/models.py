@@ -146,27 +146,33 @@ class SensitivePatientData(models.Model):
     Prototype for sensitive patient data database.
     """
     patient_id = models.CharField(max_length=100, unique=True, primary_key=True)
-    vorname = models.CharField(max_length=100)
-    nachname = models.CharField(max_length=100)
-    strasse = models.CharField(max_length=100)
-    postleitzahl = models.CharField(max_length=100)
-    stadt = models.CharField(max_length=100)
-    geburtsdatum = models.DateField()
-    telefon_nummer = models.CharField(max_length=100)
-    handy_nummer = models.CharField(max_length=100)
+    vorname = models.CharField(max_length=100, blank=True, null=True)
+    nachname = models.CharField(max_length=100, blank=True, null=True)
+    strasse = models.CharField(max_length=100, blank=True, null=True)
+    postleitzahl = models.CharField(max_length=100, blank=True, null=True)
+    stadt = models.CharField(max_length=100, blank=True, null=True)
+    geburtsdatum = models.DateField(blank=True, null=True)
+    telefon_nummer = models.CharField(max_length=100, blank=True, null=True)
+    handy_nummer = models.CharField(max_length=100, blank=True, null=True)
 
     # Versicherungsnummer
-    kv_nummer = models.CharField(max_length=100)
+    kv_nummer = models.CharField(max_length=100, blank=True, null=True)
     # "Verordnungsdatum" -> Datum an dem die Maske verschrieben wurde
-    vo_datum = models.DateField()
+    vo_datum = models.DateField(blank=True, null=True)
     # Datum an dem die Maske geliefert wurde
-    kv_datum = models.DateField()
+    kv_datum = models.DateField(blank=True, null=True)
     # Gen. Datum?
-    gen_datum = models.DateField()
+    gen_datum = models.DateField(blank=True, null=True)
 
-    versicherungsunternehmen = models.ForeignKey(Versicherungsunternehmen, on_delete=models.PROTECT)
+    versicherungsunternehmen = models.ForeignKey(Versicherungsunternehmen, on_delete=models.PROTECT, null=True, blank=True)
+    def __str__(self):
+        return f"{self.patient_id}"  # Oder eine geeignete Darstellung des Patienten-Namens
+
+    class Meta:
+        verbose_name = "Sensitive Patient Data"
+        verbose_name_plural = "Sensitive Patient Data"
     # Verordner -> Arzt der die Maske verordnet hat
-    verordner = models.CharField(max_length=100)
+    verordner = models.CharField(max_length=100, blank=True, null=True)
 
 
 
