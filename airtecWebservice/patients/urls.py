@@ -1,16 +1,24 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path, include
+from django.urls.base import reverse_lazy
 
 
 from .views import HomeView, CreatePatientView, ListPatientView, DetailPatientView,CreateInsuranceView,CreateMaskView
 
 
 
+login_url = reverse_lazy('login')
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('patients/', ListPatientView.as_view(), name='list_patients'),
-    path('patients/add', CreatePatientView.as_view(), name='create_patient'),
-    path('patients/<slug:patient_id>/', DetailPatientView.as_view(), name='detail'),
+
     path('create_insurance/', CreateInsuranceView.as_view(), name='create_insurance'),
-    path('patients/<slug:patient_id>/masks/add', CreateMaskView.as_view(), name='create_mask'),
+   
+
+    #only for looged in user
+    path('patients/', login_required(ListPatientView.as_view(), login_url=login_url), name='list_patients'),
+    path('patients/add', login_required(CreatePatientView.as_view(), login_url=login_url), name='create_patient'),
+    path('patients/<slug:patient_id>/', login_required(DetailPatientView.as_view(), login_url=login_url), name='detail'),
+    path('patients/<slug:patient_id>/masks/add', login_required(CreateMaskView.as_view(), login_url=login_url), name='create_mask'),
+
 
 ]
