@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.urls.base import reverse_lazy
 
 
-from .views import HomeView, CreatePatientView, ListPatientView, DetailPatientView,CreateInsuranceView,CreateMaskView
+from .views import HomeView, CreatePatientView, ListPatientView, DetailPatientView, CreateInsuranceView, CreateMaskView
 
 
 
@@ -11,7 +11,6 @@ login_url = reverse_lazy('login')
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
 
-    path('create_insurance/', CreateInsuranceView.as_view(), name='create_insurance'),
    
 
     #only for looged in user
@@ -19,6 +18,7 @@ urlpatterns = [
     path('patients/add', login_required(CreatePatientView.as_view(), login_url=login_url), name='create_patient'),
     path('patients/<slug:patient_id>/', login_required(DetailPatientView.as_view(), login_url=login_url), name='detail'),
     path('patients/<slug:patient_id>/masks/add', login_required(CreateMaskView.as_view(), login_url=login_url), name='create_mask'),
+    path('patients/create_insurance',login_required(CreateInsuranceView.as_view(), login_url=login_url), name='create_insurance'),
 
 
 ]

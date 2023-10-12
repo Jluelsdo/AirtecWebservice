@@ -26,26 +26,8 @@
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingInsurance" data-bs-parent="#accordionPatientInformation">
             <div class="accordion-body">
-                {% if insurance_company %}
-                <h2>Versicherungsunternehmen</h2>
-                <p>Name: {{ insurance_company.versicherungsunternehmen }}</p>
-                <p>Adresse: {{ insurance_company.strasse }}, {{ insurance_company.postleitzahl }} {{ insurance_company.stadt }}</p>
-                <p>Telefon: {{ insurance_company.telefon }}</p>
-                <p>Fax: {{ insurance_company.fax_nummer }}</p>
-                {% else %}
-                <p>Kein Versicherungsunternehmen gefunden.</p>
-                <form method="POST" action="{% url 'detail' patient_id=patient.patient_id %}">
-                    {% csrf_token %}
-                    <label for="versicherungsunternehmen">Versicherungsunternehmen</label>
-                    <select name="Versicherungsunternehmen" id="Versicherungsunternehmen">
-                        <option value="" selected disabled>Wählen Sie ein Versicherungsunternehmen aus</option>
-                        {% for versicherung in versicherungsunternehmen_list %}
-                        <option value="{{ versicherung.id }}">{{ versicherung.versicherungsunternehmen }}</option>
-                        {% endfor %}
-                    </select>
-                    <button type="submit" class="btn btn-primary">Erstellen</button>
-                </form>
-                {% endif %}
+              {{ patient.insurance }}
+              {% include 'patients/insurance_detail.html' with insurance=patient.insurance %}
             </div>
         </div>
     </div>

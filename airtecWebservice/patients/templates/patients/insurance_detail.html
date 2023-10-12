@@ -1,0 +1,20 @@
+{% if sensitive_data.versicherungsunternehmen %}
+                <h2>Versicherungsunternehmen</h2>
+                <p>Name: {{ sensitive_data.versicherungsunternehmen.versicherungsunternehmen }}</p>
+                <p>Adresse: {{ sensitive_data.versicherungsunternehmen.strasse }}, {{ sensitive_data.versicherungsunternehmen.postleitzahl }} {{ sensitive_data.versicherungsunternehmen.stadt }}</p>
+                <p>Telefon: {{ sensitive_data.versicherungsunternehmen.telefon }}</p>
+                <p>Fax: {{ sensitive_data.versicherungsunternehmen.fax_nummer }}</p>
+                {% else %}
+                <p>Kein Versicherungsunternehmen gefunden.</p>
+                <form method="POST" action="{% url 'detail' patient_id=patient.patient_id %}">
+                    {% csrf_token %}
+                    <label for="versicherungsunternehmen">Versicherungsunternehmen</label>
+                    <select name="Versicherungsunternehmen" id="Versicherungsunternehmen">
+                        <option value="" selected disabled>Wählen Sie ein Versicherungsunternehmen aus</option>
+                        {% for versicherung in versicherungsunternehmen_list %}
+                        <option value="{{ versicherung.id }}">{{ versicherung.versicherungsunternehmen }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Erstellen</button>
+                </form>
+                {% endif %}
