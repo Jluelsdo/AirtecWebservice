@@ -121,7 +121,7 @@ class Maske(models.Model):
     def save(self, *args, **kwargs):
         if self.gaensegurgeln != 'sonstige':
             self.other_field = ''
-        
+
         if self.konnektoren != 'sonstige':
             self.konnektoren_sonstige = ''
 

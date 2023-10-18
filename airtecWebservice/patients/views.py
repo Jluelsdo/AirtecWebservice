@@ -1,4 +1,4 @@
-from django.shortcuts import render
+"""Views for the patients app."""
 from django.urls import reverse_lazy
 
 from django.views.generic import TemplateView, ListView, DetailView
@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView
 from .models import Patient, Maske
 
 class HomeView(TemplateView):
+    """Home page view."""
     template_name = 'patients/home.html'
 
 class CreatePatientView(CreateView):
@@ -19,6 +20,7 @@ class CreatePatientView(CreateView):
               'prothese', 'abdruck_zeitpunkt', 'abdruck_ort']
 
     def form_valid(self, form):
+        """Set the created_by field to the current user."""
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
@@ -30,6 +32,7 @@ class ListPatientView(ListView):
     ordering = ['patient_id']
 
     def get_queryset(self):
+        """Filter the queryset by the search query if given."""
         queryset = super().get_queryset()
         search_query = self.request.GET.get('q')
         if search_query:
@@ -50,7 +53,10 @@ class DetailPatientView(DetailView):
 
 
 class CreateMaskView(CreateView):
-    """Create a new mask, forward to Patientdetailpage when done. Use the patient id for foreign key."""
+    """
+    Create a new mask, forward to Patientdetailpage when done.
+    Use the patient id for foreign key.
+    """
     template_name = 'patients/create_mask.html'
     model = Maske
     fields = ['masken_id', 'masken_typ', 'anschluss', 'gerätetyp',
@@ -61,9 +67,11 @@ class CreateMaskView(CreateView):
               'hartschale']
 
     def form_valid(self, form):
+        """Set the created_by field to the current user."""
         form.instance.created_by = self.request.user
         form.instance.patient = Patient.objects.get(patient_id=self.kwargs['patient_id'])
         return super().form_valid(form)
-    
-    def get_success_url(self) -> str:
+
+    def get_success_url(self):
+        """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy('detail', kwargs={'patient_id': self.kwargs['patient_id']})
