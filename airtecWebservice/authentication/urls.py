@@ -1,4 +1,6 @@
-from django.urls import path, include
+"""Authentication URL Configuration"""
+
+from django.urls import path
 from .views import LoginView, LogoutView
 
 urlpatterns = [
