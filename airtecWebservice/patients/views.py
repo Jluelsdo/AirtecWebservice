@@ -17,7 +17,7 @@ class CreatePatientView(CreateView):
     model = Patient
     fields = ['patient_id', 'größe', 'gewicht', 'geschlecht', 'alter',
               'andere_informationen', 'gesichtstyp', 'prothesenträger',
-              'prothese', 'abdruck_zeitpunkt', 'abdruck_ort']
+              'prothese',]
 
     def form_valid(self, form):
         """Set the created_by field to the current user."""
@@ -59,12 +59,11 @@ class CreateMaskView(CreateView):
     """
     template_name = 'patients/create_mask.html'
     model = Maske
-    fields = ['masken_id', 'masken_typ', 'anschluss', 'gerätetyp',
-              'lieferant', 'druck_mbar', 'material_shore_lot',
-              'gaensegurgeln', 'ganesegurgel_sonstige', 'tuben',
-              'konnektoren', 'konnektoren_sonstige', 'ausatemventil',
-              'ausatemventil_sonstige', 'kopf_Mund_Baender', 'kopf_Mund_Baender_sonstige',
-              'hartschale']
+    fields = ['masken_typ', 'anschluss', 'gerätetyp',
+              'druck_mbar', 'ausatemventil',
+              'ausatemventil_sonstige', 'kopf_Mund_Baender',
+              'kopf_Mund_Baender_sonstige', 'hartschale'
+            ]
 
     def form_valid(self, form):
         """Set the created_by field to the current user."""
