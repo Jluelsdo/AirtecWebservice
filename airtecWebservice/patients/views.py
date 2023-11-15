@@ -5,6 +5,9 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from .models import Patient, Maske
+from django.http import FileResponse
+from django.conf import settings
+import os
 
 class HomeView(TemplateView):
     """Home page view."""
@@ -17,7 +20,7 @@ class CreatePatientView(CreateView):
     model = Patient
     fields = ['patient_id', 'größe', 'gewicht', 'geschlecht', 'alter',
               'andere_informationen', 'gesichtstyp', 'prothesenträger',
-              'prothese',]
+              'prothese','stl_file']
 
     def form_valid(self, form):
         """Set the created_by field to the current user."""
@@ -46,7 +49,7 @@ class DetailPatientView(DetailView):
     fields = ['patient_id', 'größe', 'gewicht', 'geschlecht',
               'alter', 'andere_informationen', 'gesichtstyp',
               'prothesenträger', 'prothese', 'abdruck_zeitpunkt',
-              'abdruck_ort']
+              'abdruck_ort', 'stl_file']
     slug_field = 'patient_id'
     slug_url_kwarg = 'patient_id'
 
@@ -74,3 +77,10 @@ class CreateMaskView(CreateView):
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy('detail', kwargs={'patient_id': self.kwargs['patient_id']})
+
+def stl_view(request):
+    """
+    Proof of concept for serving STL files.
+    """
+    stl_path = os.path.join(settings.BASE_DIR, 'patients/beispielscan.stl')
+    return FileResponse(open(stl_path, 'rb'), content_type='application/octet-stream')
