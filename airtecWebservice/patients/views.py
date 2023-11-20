@@ -1,11 +1,12 @@
 """Views for the patients app."""
 from django.urls import reverse_lazy
 
+from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from .models import Patient, Maske
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from django.conf import settings
 import os
 
@@ -20,7 +21,7 @@ class CreatePatientView(CreateView):
     model = Patient
     fields = ['patient_id', 'größe', 'gewicht', 'geschlecht', 'alter',
               'andere_informationen', 'gesichtstyp', 'prothesenträger',
-              'prothese','stl_file']
+              'prothese','schlaf_unterkiefer_mm', 'stl_file']
 
     def form_valid(self, form):
         """Set the created_by field to the current user."""
@@ -49,7 +50,7 @@ class DetailPatientView(DetailView):
     fields = ['patient_id', 'größe', 'gewicht', 'geschlecht',
               'alter', 'andere_informationen', 'gesichtstyp',
               'prothesenträger', 'prothese', 'abdruck_zeitpunkt',
-              'abdruck_ort', 'stl_file']
+              'abdruck_ort', 'schlaf_unterkiefer_mm', 'stl_file']
     slug_field = 'patient_id'
     slug_url_kwarg = 'patient_id'
 
@@ -84,3 +85,17 @@ def stl_view(request):
     """
     stl_path = os.path.join(settings.BASE_DIR, 'patients/beispielscan.stl')
     return FileResponse(open(stl_path, 'rb'), content_type='application/octet-stream')
+
+class STLFileView(View):
+    """
+    Class-based view to serve an STL file based on a given patient ID.
+    """
+    def get(self, request, *args, **kwargs):
+        patient_id = self.kwargs.get('patient_id')
+        patient = Patient.objects.get(patient_id=patient_id)
+        stl_file_path = patient.stl_file.path
+
+        if os.path.exists(stl_file_path):
+            return FileResponse(open(stl_file_path, 'rb'), content_type='application/octet-stream')
+        else:
+            raise Http404("STL file does not exist.")
