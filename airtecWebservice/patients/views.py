@@ -1,4 +1,7 @@
 """Views for the patients app."""
+from typing import Any
+from django.core.files.storage import default_storage
+
 from django.urls import reverse_lazy
 
 from django.views import View
@@ -6,7 +9,7 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from .models import Patient, Maske
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpRequest, HttpResponse
 from django.conf import settings
 import os
 
@@ -26,6 +29,15 @@ class CreatePatientView(CreateView):
     def form_valid(self, form):
         """Set the created_by field to the current user."""
         form.instance.created_by = self.request.user
+
+        uploaded_file = self.request.FILES.get('stl_file')
+
+        if uploaded_file:
+            file_path = f'stl/{form.instance.patient_id}.stl'
+            file_path = default_storage.save(file_path, uploaded_file)
+
+            form.instance.stl_file = file_path
+
         return super().form_valid(form)
 
 class ListPatientView(ListView):

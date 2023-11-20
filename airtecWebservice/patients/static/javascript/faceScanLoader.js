@@ -6,7 +6,9 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 
 setTimeout( () => {
     const card = document.getElementById('stlFaceCard')
-
+    card.style.display = 'flex';
+    card.style.justifyContent = 'center';
+    card.style.alignItems = 'center';
     const scene = new THREE.Scene()
     scene.add(new THREE.AxesHelper(5))
 
@@ -43,7 +45,7 @@ setTimeout( () => {
 
     const loader = new STLLoader()
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/load', true);
+    xhr.open('GET', '/patients/'+patientId+'/facestl', true);
     xhr.responseType = 'arraybuffer';
 
     xhr.onload = function () {
