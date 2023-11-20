@@ -1,7 +1,6 @@
-<div class="container">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1 class="text-center mb-4">Patient Details</h1>
+{% load static %}
+<div class="row">
+    <div class="col-md-6 card">
         <ul class="list-group">
             <li class="list-group-item"><strong>Größe:</strong> {{ patient.größe }} cm</li>
             <li class="list-group-item"><strong>Gewicht:</strong> {{ patient.gewicht }} kg</li>
@@ -10,8 +9,14 @@
             <li class="list-group-item"><strong>Andere Informationen:</strong> {{ patient.andere_informationen }}</li>
             <li class="list-group-item"><strong>Gesichtstyp</strong> {{ patient.gesichtstyp }}</li>
             <li class="list-group-item"><strong>Prothesenträger:</strong> {{ patient.prothesenträger }}</li>
-            <li class="list-group-item"><strong>Prothse:</strong> {{ maske.gaensegurgeln }}</li>
+            <li class="list-group-item"><strong>Prothse:</strong> {{ patient.prothese }}</li>
+            <li class="list-group-item"><strong>Unterkieferabsenkung im Schlaf (mm):</strong> {{ patient.schlaf_unterkiefer_mm }}</li>
         </ul>
     </div>
-</div>
+    <div class="col-md-6 card">
+        <div class="card-body " id="stlFaceCard">
+            <script> const patientId = {{ patient.patient_id }}; </script>
+            <script type="module" src="{% static 'javascript/faceScanLoader.js' %}"></script>
+        </div>
+    </div>
 </div>

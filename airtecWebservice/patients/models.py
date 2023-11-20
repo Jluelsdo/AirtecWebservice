@@ -16,7 +16,8 @@ class Patient(models.Model):
     gesichtstyp = models.CharField(choices=(('pyknisch', 'pyknisch'), ('athletisch', 'athletisch'), ('leptosom', 'leptosom')), max_length=14, default='pyknisch')
     prothesenträger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
-
+    stl_file = models.FileField(upload_to='stl/', blank=True, null=True)
+    schlaf_unterkiefer_mm = models.FloatField(blank=True, null=True)
     def __str__(self):
         return self.patient_id
 
