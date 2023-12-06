@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'restapi.apps.RestapiConfig',
     'patients.apps.PatientsConfig',
     'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
