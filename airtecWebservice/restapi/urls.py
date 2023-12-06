@@ -1,6 +1,8 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from .views import PatientsViewSet, PatientDetailView
 
 urlpatterns = [
-    path('', views.index, name='index'),
-]
+    path('patients/', PatientsViewSet.as_view({'get': 'list', 'post': 'create'})),
+    path('patients/<int:patient_id>/', PatientDetailView.as_view()),
+    path('api-auth/', include('rest_framework.urls'))
+    ]
