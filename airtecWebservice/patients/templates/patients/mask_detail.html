@@ -2,30 +2,21 @@
     <div class="row">
       <div class="col-md-8 offset-md-2">
         {% if masken %}
-        <h1 class="text-center mb-4">Mask Details</h1>
+        <h1 class="text-center mb-4">Masken Details</h1>
         {% endif %}
         {% for maske in masken.all %}
         <ul class="list-group">
-        <li class="list-group-item"><strong>Masken ID:</strong> {{ maske.masken_id }}</li>
-        <li class="list-group-item"><strong>Masken Typ:</strong> {{ maske.masken_typ }}</li>
-        <li class="list-group-item"><strong>Anschluss:</strong> {{ maske.anschluss }}</li>
-        <li class="list-group-item"><strong>Gerätetyp:</strong> {{ maske.gerätetyp }}</li>
-        <li class="list-group-item"><strong>Lieferant:</strong> {{ maske.lieferant }}</li>
-        <li class="list-group-item"><strong>Druck (mbar):</strong> {{ maske.druck_mbar }}</li>
-        <li class="list-group-item"><strong>Material Shore Lot:</strong> {{ maske.material_shore_lot }}</li>
-        <li class="list-group-item"><strong>Gänsegurgeln:</strong> {{ maske.gaensegurgeln }}</li>
-        <li class="list-group-item"><strong>Gänsegurgeln Sonstige:</strong> {{ maske.ganesegurgel_sonstige }}</li>
-        <li class="list-group-item"><strong>Tuben:</strong> {{ maske.tuben }}</li>
-        <li class="list-group-item"><strong>Konnektoren:</strong> {{ maske.konnektoren }}</li>
-        <li class="list-group-item"><strong>Konnektoren Sonstige:</strong> {{ maske.konnektoren_sonstige }}</li>
-        <li class="list-group-item"><strong>Ausatmventil:</strong> {{ maske.ausatemventil }}</li>
-        <li class="list-group-item"><strong>Ausatmventil Sonstige:</strong> {{ maske.ausatemventil_sonstige }}</li>
-        <li class="list-group-item"><strong>Kopf/Mund Bänder:</strong> {{ maske.kopf_Mund_Baender }}</li>
-        <li class="list-group-item"><strong>Kopf/Mund Bänder Sonstige:</strong> {{ maske.kopf_Mund_Baender_sonstige }}</li>
-        <li class="list-group-item"><strong>Patient:</strong> {{ maske.patient }}</li>
-        <li class="list-group-item"><strong>Hartschale:</strong> {{ maske.hartschale }}</li>
-        <li class="list-group-item"><strong>Übergabe:</strong> {{ maske.uebergabe }}</li>
-        <li class="list-group-item"><strong>Lieferung:</strong> {{ maske.lieferung }}</li>
+        <li class="list-group-item"><strong>Masken ID: </strong> {{ maske.id }}</li>
+        <li class="list-group-item"><strong>Masken Typ: </strong> {{ maske.masken_typ }}</li>
+        <li class="list-group-item"><strong>Anschluss: </strong> {{ maske.anschluss }}</li>
+        <li class="list-group-item"><strong>Gerätetyp: </strong> {{ maske.geraetetyp }}</li>
+        <li class="list-group-item"><strong>Druck (mbar): </strong> {{ maske.druck_mbar }}</li>
+        <li class="list-group-item"><strong>Ausatemventil :</strong> {{ maske.ausatemventil }}</li>
+        <li class="list-group-item"><strong>Ausatemventil Sonstige :</strong> {{ maske.ausatemventil_sonstige }}</li>
+        <li class="list-group-item"><strong>Kopf/Mund Bänder :</strong> {{ maske.kopf_Mund_Baender }}</li>
+        <li class="list-group-item"><strong>Kopf/Mund Bänder Sonstige :</strong> {{ maske.kopf_Mund_Baender_sonstige }}</li>
+        <li class="list-group-item"><strong>Patient :</strong> {{ maske.patient }}</li>
+        <li class="list-group-item"><strong>Hartschale :</strong> {{ maske.hartschale }}</li>
         </ul>
         <br>
         {% endfor %}

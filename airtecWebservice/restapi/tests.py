@@ -30,39 +30,39 @@ class PatientsTest(APITestCase):
         self.client.login(username='testuser', password='testpass')
         self.patient = Patient.objects.create(
             patient_id=1,
-            größe=180,
+            groeße=180,
             gewicht=75,
             geschlecht='M',
             alter=30,
             andere_informationen='Test Information',
             gesichtstyp='Test Gesichtstyp',
-            prothesenträger=True,
+            prothesentraeger=True,
             prothese='Test Prothese',
             stl_file='test_file.stl',
             schlaf_unterkiefer_mm=10
         )
         self.valid_payload = {
                 'patient_id': 1,
-                'größe': 180,
+                'groeße': 180,
                 'gewicht': 75,
                 'geschlecht': 'M',
                 'alter': 30,
                 'andere_informationen': 'Test Information',
                 'gesichtstyp': 'Test Gesichtstyp',
-                'prothesenträger': True,
+                'prothesentraeger': True,
                 'prothese': 'Test Prothese',
                 'stl_file': 'test_file.stl',
                 'schlaf_unterkiefer_mm': 10
             }
         self.invalid_payload = {
             'patient_id': '',
-            'größe': '',
+            'groeße': '',
             'gewicht': '',
             'geschlecht': '',
             'alter': '',
             'andere_informationen': '',
             'gesichtstyp': '',
-            'prothesenträger': '',
+            'prothesentraeger': '',
             'prothese': '',
             'stl_file': '',
             'schlaf_unterkiefer_mm': ''
@@ -104,13 +104,13 @@ class MaskTest(APITestCase):
         self.client.login(username='testuser', password='testpass')
         self.patient = Patient.objects.create(
             patient_id=1,
-            größe=180,
+            groeße=180,
             gewicht=75,
             geschlecht='M',
             alter=30,
             andere_informationen='Test Information',
             gesichtstyp='Test Gesichtstyp',
-            prothesenträger=True,
+            prothesentraeger=True,
             prothese='Test Prothese',
             stl_file='test_file.stl',
             schlaf_unterkiefer_mm=10
@@ -119,7 +119,7 @@ class MaskTest(APITestCase):
             patient_id = self.patient.patient_id,
             masken_typ='Test Masken Typ',
             anschluss='1, 15',
-            gerätetyp='Test Gerätetyp',
+            geraetetyp='Test Gerätetyp',
             druck_mbar=10,
             ausatemventil='8901, Respironics',
             ausatemventil_sonstige='Test Ausatemventil Sonstige',
@@ -129,7 +129,7 @@ class MaskTest(APITestCase):
         self.valid_payload = {
             'masken_typ': 'Test Masken Typ',
             'anschluss': '1, 15',
-            'gerätetyp': 'Test Gerätetyp',
+            'geraetetyp': 'Test Gerätetyp',
             'druck_mbar': 10,
             'ausatemventil': '8901, Respironics',
             'ausatemventil_sonstige': 'Test Ausatemventil Sonstige',
@@ -139,7 +139,7 @@ class MaskTest(APITestCase):
         self.invalid_payload = {
             'masken_typ': '',
             'anschluss': '',
-            'gerätetyp': '',
+            'geraetetyp': '',
             'druck_mbar': '',
             'ausatemventil': '',
             'ausatemventil_sonstige': '',

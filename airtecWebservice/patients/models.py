@@ -11,7 +11,7 @@ class Patient(models.Model):
     Nicht direkt mit sensiblen Patientendaten verbunden, nur über patient_id.
     """
     patient_id = models.CharField(max_length=100, unique=True)
-    größe = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    groeße = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     gewicht = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     geschlecht = models.CharField(max_length=10)
     alter = models.PositiveIntegerField(blank=True, null=True)
@@ -19,7 +19,7 @@ class Patient(models.Model):
     gesichtstyp = models.CharField(
         choices=(('pyknisch', 'pyknisch'), ('athletisch', 'athletisch'), ('leptosom', 'leptosom')),
                 max_length=14, default='pyknisch')
-    prothesenträger = models.BooleanField(default=False)
+    prothesentraeger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
     stl_file = models.FileField(upload_to='stl/', blank=True, null=True)
     schlaf_unterkiefer_mm = models.FloatField(blank=True, null=True)
@@ -65,7 +65,7 @@ class Maske(models.Model):
 
     masken_typ = models.CharField(max_length=100)
     anschluss = models.CharField(choices=zip(anschluss_select, anschluss_select), max_length=5)
-    gerätetyp = models.CharField(max_length=100)
+    geraetetyp = models.CharField(max_length=100)
     druck_mbar = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     ausatemventil = models.CharField(
