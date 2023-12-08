@@ -12,21 +12,38 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import json
+
+# Specify the path to the config.json file
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Specify the path to the config.json file
+config_file_path = os.path.join(BASE_DIR, '../../config.json')
 
+# Read the contents of the config.json file
+with open(config_file_path, "r") as file:
+    config_data = json.load(file)
+
+# Access the data from the config.json file
+# For example, if the file contains a key called "username"
+secret_key = config_data["secret_key"]
+debug = config_data["debug_mode"]
+allowed_hosts = config_data["allowed_hosts"]
+static_root = config_data["static_root"]
+media_root = config_data["media_root"]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-111+^x-!(_5qrd4$&g(=yfh(8=)u3$33b1(ng*e!9r*85p0^2('
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = debug
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [allowed_hosts]
 
 
 # Application definition
@@ -130,9 +147,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR,'../../staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, static_root)
 STATIC_URL = 'static/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, media_root)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

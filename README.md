@@ -21,6 +21,18 @@ Ensure that only requirements are added that are needed for the project.
 
 ## Start project
 
+### Configurations through config.json
+To seperate the configuration from the code, a config.json file is used.
+The file has to be included in the root directory of the project.
+The json file has the following settings:
+```{
+        "secret_key": "<secret_key provided, ask jonas.luelsdorf@th-koeln.de >",
+        "debug_mode": <true/false>,
+        "allowed_hosts": "<allowed hosts, eg. on local localhost:8000 >",
+        "static_root": "<location staticfiles e.g. ../../staticfiles >",
+        "media_root": "<location mediafiles e.g. ../../mediafiles >"
+    }
+```
 ### Start server
 ```bash
 python manage.py runserver
