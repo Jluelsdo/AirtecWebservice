@@ -1,19 +1,30 @@
+"""
+Test module for the restapi app.
+
+This module contains test cases for the restapi app in the AirtecWebservice project.
+It includes tests for the PatientsTest and MaskTest classes, which test the functionality
+of the API endpoints related to patients and masks, respectively.
+"""
+#pylint: disable=missing-function-docstring, imported-auth-user
+import os
+import json
+
+import django
 from django.urls import reverse
 from django.contrib.auth.models import User
 
 from rest_framework import status
 from rest_framework.test import APITestCase
 from patients.models import Patient, Maske
-from .serializers import PatientSerializer
-import json
-import os
-import django
-from airtecWebservice import settings
+from restapi.serializers import PatientSerializer
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'airtecWebservice.settings')
 django.setup()
 
 class PatientsTest(APITestCase):
+    """
+    Test case for the Patients API endpoints.
+    """
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass')
         self.client.login(username='testuser', password='testpass')
@@ -61,8 +72,8 @@ class PatientsTest(APITestCase):
         response = self.client.get(reverse('api-patient-list'))
         patients = Patient.objects.all()
         serializer = PatientSerializer(patients, many=True)
-        for i in range(len(serializer.data)):
-            serializer.data[i]['stl_file'] = 'http://testserver'+serializer.data[i]['stl_file']
+        for data in serializer.data:
+            data['stl_file'] = 'http://testserver'+data['stl_file']
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -85,6 +96,9 @@ class PatientsTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 class MaskTest(APITestCase):
+    """
+    Test case for the Mask model and API endpoints.
+    """
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass')
         self.client.login(username='testuser', password='testpass')

@@ -1,12 +1,12 @@
-
+"""Views for the REST API."""
+# pylint: disable=too-many-ancestors
 from django.http import Http404
 
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PatientSerializer, MaskeSerializer
+from restapi.serializers import PatientSerializer, MaskeSerializer
 from patients.models import Patient, Maske
-
 
 class PatientsViewSet(viewsets.ModelViewSet):
     """
@@ -14,7 +14,6 @@ class PatientsViewSet(viewsets.ModelViewSet):
     """
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
-
 
 class PatientDetailView(APIView):
     """
@@ -46,10 +45,10 @@ class PatientDetailView(APIView):
         """
         try:
             return Patient.objects.get(patient_id=patient_id)
-        except Patient.DoesNotExist:
-            raise Http404
+        except Patient.DoesNotExist as exc:
+            raise Http404 from exc
 
-    def get(self, request, patient_id, format=None):
+    def get(self, request, patient_id, *args, **kwargs):
         """
         Retrieves the details of a specific patient.
 
@@ -65,7 +64,7 @@ class PatientDetailView(APIView):
         serializer = PatientSerializer(patient)
         return Response(serializer.data)
 
-    def put(self, request, patient_id, format=None):
+    def put(self, request, patient_id, *args, **kwargs):
         """
         Updates the details of a specific patient.
 
@@ -85,7 +84,7 @@ class PatientDetailView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
 
-    def delete(self, request, patient_id, format=None):
+    def delete(self, patient_id, *args, **kwargs):
         """
         Deletes a specific patient.
 
@@ -127,69 +126,69 @@ class MaskeDetailView(APIView):
         """
         return Maske.objects.all()
 
-    def get_object(self, id):
+    def get_object(self, object_id):
         """
         Returns the mask object with the specified id.
 
         Args:
-        - id: The ID of the mask.
+        - object_id: The ID of the mask.
 
         Raises:
         - Http404: If the mask with the specified ID does not exist.
         """
         try:
-            return Maske.objects.get(id=id)
-        except Maske.DoesNotExist:
-            raise Http404
+            return Maske.objects.get(id=object_id)
+        except Maske.DoesNotExist as exc:
+            raise Http404 from exc
 
-    def get(self, request, id, format=None):
+    def get(self, request, object_id, *args, **kwargs):
         """
         Retrieves the details of a specific mask.
 
         Args:
         - request: The HTTP request object.
-        - id: The ID of the mask to retrieve.
+        - mask_id: The ID of the mask to retrieve.
         - format: The format of the response data (default: None).
 
         Returns:
         - Response: The serialized data of the mask.
         """
-        mask = self.get_object(id)
+        mask = self.get_object(object_id)
         serializer = MaskeSerializer(mask)
         return Response(serializer.data)
 
-    def put(self, request, id, format=None):
+    def put(self, request, object_id, *args, **kwargs):
         """
         Updates the details of a specific mask.
 
         Args:
         - request: The HTTP request object.
-        - id: The ID of the mask to update.
+        - object_id: The ID of the mask to update.
         - format: The format of the request data (default: None).
 
         Returns:
         - Response: The serialized data of the updated mask if the request data is valid,
                     otherwise the errors in the serializer.
         """
-        mask = self.get_object(id)
+        mask = self.get_object(object_id)
         serializer = MaskeSerializer(mask, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
 
-    def delete(self, request, id, format=None):
+    def delete(self,object_id, *args, **kwargs):
         """
         Deletes a specific mask.
 
         Args:
         - request: The HTTP request object.
-        - id: The ID of the mask to delete.
+        - object_id: The ID of the mask to delete.
         - format: The format of the response data (default: None).
 
         Returns:
         - Response: The HTTP response with status code 204 (No Content).
         """
-        mask = self.get_object(id)
+        mask = self.get_object(object_id)
         mask.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
