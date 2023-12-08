@@ -1,3 +1,6 @@
+"""
+Model file for the patients app.
+"""
 #Since the form is used through german speaking countries, all fields are in german.
 from django.db import models
 
@@ -13,7 +16,9 @@ class Patient(models.Model):
     geschlecht = models.CharField(max_length=10)
     alter = models.PositiveIntegerField(blank=True, null=True)
     andere_informationen = models.TextField(blank=True)
-    gesichtstyp = models.CharField(choices=(('pyknisch', 'pyknisch'), ('athletisch', 'athletisch'), ('leptosom', 'leptosom')), max_length=14, default='pyknisch')
+    gesichtstyp = models.CharField(
+        choices=(('pyknisch', 'pyknisch'), ('athletisch', 'athletisch'), ('leptosom', 'leptosom')),
+                max_length=14, default='pyknisch')
     prothesenträger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
     stl_file = models.FileField(upload_to='stl/', blank=True, null=True)
@@ -63,10 +68,14 @@ class Maske(models.Model):
     gerätetyp = models.CharField(max_length=100)
     druck_mbar = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-    ausatemventil = models.CharField(choices=zip(ausatemventil_select,ausatemventil_select), max_length=19)
+    ausatemventil = models.CharField(
+        choices=zip(ausatemventil_select,ausatemventil_select),
+        max_length=19)
     ausatemventil_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
-    kopf_Mund_Baender = models.CharField(choices=zip(kopf_Mund_Baender_select, kopf_Mund_Baender_select), max_length=22)
+    kopf_Mund_Baender = models.CharField(
+        choices=zip(kopf_Mund_Baender_select, kopf_Mund_Baender_select),
+        max_length=22)
     kopf_Mund_Baender_sonstige = models.CharField(max_length=100, blank=True, null=True)
 
     patient = models.ForeignKey('Patient', on_delete=models.CASCADE, related_name='masken')
