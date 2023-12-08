@@ -1,5 +1,6 @@
 """Views for the patients app."""
-from typing import Any
+import os
+
 from django.core.files.storage import default_storage
 
 from django.urls import reverse_lazy
@@ -8,10 +9,10 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
-from .models import Patient, Maske
-from django.http import FileResponse, Http404, HttpRequest, HttpResponse
+from django.http import FileResponse, Http404
 from django.conf import settings
-import os
+from patients.models import Patient, Maske
+
 
 class HomeView(TemplateView):
     """Home page view."""
@@ -103,11 +104,11 @@ class STLFileView(View):
     Class-based view to serve an STL file based on a given patient ID.
     """
     def get(self, request, *args, **kwargs):
+        """Return the STL file for the patient with the given ID."""
         patient_id = self.kwargs.get('patient_id')
         patient = Patient.objects.get(patient_id=patient_id)
         stl_file_path = patient.stl_file.path
 
         if os.path.exists(stl_file_path):
             return FileResponse(open(stl_file_path, 'rb'), content_type='application/octet-stream')
-        else:
-            raise Http404("STL file does not exist.")
+        raise Http404("STL file does not exist.")

@@ -1,9 +1,10 @@
 """Patients URLs."""
+# pylint: disable=line-too-long
 from django.contrib.auth.decorators import login_required
 from django.urls import path
 from django.urls.base import reverse_lazy
 
-from .views import HomeView, CreatePatientView, ListPatientView, DetailPatientView, CreateMaskView, STLFileView
+from patients.views import HomeView, CreatePatientView, ListPatientView, DetailPatientView, CreateMaskView, STLFileView
 
 login_url = reverse_lazy('login')
 urlpatterns = [

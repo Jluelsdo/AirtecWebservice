@@ -1,6 +1,7 @@
 """This file is used to register the Patient model in the admin interface."""
+# pylint: disable=unnecessary-pass
 from django.contrib import admin
-from .models import Patient
+from patients.models import Patient
 
 class PatientAdmin(admin.ModelAdmin):
     """Configure the Patient model for the admin interface."""
