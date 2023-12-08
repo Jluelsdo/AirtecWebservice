@@ -1,4 +1,5 @@
 """Class based views for authentication app."""
+# pylint: disable=E0102
 from django.shortcuts import reverse
 
 from django.contrib.auth.views import LoginView, LogoutView
