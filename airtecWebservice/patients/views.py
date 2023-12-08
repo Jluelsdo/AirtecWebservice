@@ -23,8 +23,8 @@ class CreatePatientView(CreateView):
     template_name = 'patients/create_patient.html'
     success_url = '/patients/{patient_id}'
     model = Patient
-    fields = ['patient_id', 'größe', 'gewicht', 'geschlecht', 'alter',
-              'andere_informationen', 'gesichtstyp', 'prothesenträger',
+    fields = ['patient_id', 'groeße', 'gewicht', 'geschlecht', 'alter',
+              'andere_informationen', 'gesichtstyp', 'prothesentraeger',
               'prothese','schlaf_unterkiefer_mm', 'stl_file']
 
     def form_valid(self, form):
@@ -60,9 +60,9 @@ class DetailPatientView(DetailView):
     """Display details of a patient."""
     template_name = 'patients/detail.html'
     model = Patient
-    fields = ['patient_id', 'größe', 'gewicht', 'geschlecht',
+    fields = ['patient_id', 'groeße', 'gewicht', 'geschlecht',
               'alter', 'andere_informationen', 'gesichtstyp',
-              'prothesenträger', 'prothese', 'abdruck_zeitpunkt',
+              'prothesentraeger', 'prothese', 'abdruck_zeitpunkt',
               'abdruck_ort', 'schlaf_unterkiefer_mm', 'stl_file']
     slug_field = 'patient_id'
     slug_url_kwarg = 'patient_id'
@@ -76,7 +76,7 @@ class CreateMaskView(CreateView):
     """
     template_name = 'patients/create_mask.html'
     model = Maske
-    fields = ['masken_typ', 'anschluss', 'gerätetyp',
+    fields = ['masken_typ', 'anschluss', 'geraetetyp',
               'druck_mbar', 'ausatemventil',
               'ausatemventil_sonstige', 'kopf_Mund_Baender',
               'kopf_Mund_Baender_sonstige', 'hartschale'

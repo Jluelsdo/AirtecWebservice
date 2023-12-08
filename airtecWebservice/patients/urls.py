@@ -10,9 +10,9 @@ login_url = reverse_lazy('login')
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     #only for looged in user
-    path('patients/', login_required(ListPatientView.as_view(), login_url=login_url), name='list_patients'),
-    path('patients/add', login_required(CreatePatientView.as_view(), login_url=login_url), name='create_patient'),
-    path('patients/<slug:patient_id>/', login_required(DetailPatientView.as_view(), login_url=login_url), name='detail'),
-    path('patients/<slug:patient_id>/masks/add', login_required(CreateMaskView.as_view(), login_url=login_url), name='create_mask'),
-    path('patients/<slug:patient_id>/facestl', login_required(STLFileView.as_view(), login_url=login_url), name='stl_view'),
+    path('patienten/', login_required(ListPatientView.as_view(), login_url=login_url), name='list_patients'),
+    path('patienten/hinzufuegen', login_required(CreatePatientView.as_view(), login_url=login_url), name='create_patient'),
+    path('patienten/<slug:patient_id>/', login_required(DetailPatientView.as_view(), login_url=login_url), name='detail'),
+    path('patienten/<slug:patient_id>/masken/hinzufuegen', login_required(CreateMaskView.as_view(), login_url=login_url), name='create_mask'),
+    path('patienten/<slug:patient_id>/facestl', login_required(STLFileView.as_view(), login_url=login_url), name='stl_view'),
 ]
