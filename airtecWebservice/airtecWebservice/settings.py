@@ -30,6 +30,7 @@ with open(config_file_path, "r") as file:
 # For example, if the file contains a key called "username"
 secret_key = config_data["secret_key"]
 debug = config_data["debug_mode"]
+test_mode = config_data["test_mode"]
 allowed_hosts = config_data["allowed_hosts"]
 static_root = config_data["static_root"]
 media_root = config_data["media_root"]
@@ -43,7 +44,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug
 
-ALLOWED_HOSTS = [allowed_hosts]
+ALLOWED_HOSTS = allowed_hosts
 
 
 # Application definition
@@ -160,6 +161,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
 # Security settings
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
+if test_mode:
+    SESSION_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
