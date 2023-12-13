@@ -59,6 +59,14 @@ Must be executed after every change in static files, and when cloning the projec
 Step by step guide to deploy the project on a server.
 
 ### Setup server
+0. Create a User with root access on system
+```bash
+sudo adduser username
+sudo usermod -aG sudo username
+```
+-> Set up firewall?!
+-> Create Postgres Database
+
 1. Install necessary software on the server.
 ```bash
 sudo apt-get update
@@ -89,16 +97,18 @@ python manage.py collectstatic
 
 7. Configure Gunicorn
 ```bash
-gunicorn --bind 0.0.0.0:8000 AirtecWebservice.wsgi:application
+gunicorn --bind 0.0.0.0:8000 airtecWebservice.wsgi:application
 ```
 
 8. Configure Nginx
 ```bash
 sudo rm /etc/nginx/sites-enabled/default
+#Create folder nginx/sites-avaialable
 sudo touch /etc/nginx/sites-available/AirtecWebservice
 sudo ln -s /etc/nginx/sites-available/AirtecWebservice /etc/nginx/sites-enabled/AirtecWebservice
 ```
 9 Add avaiable sites
+in sites-available/AirtecWebservice
 ```bash
 server {
     listen 80;
