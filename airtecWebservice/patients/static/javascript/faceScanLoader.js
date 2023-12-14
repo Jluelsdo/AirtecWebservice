@@ -45,7 +45,7 @@ setTimeout( () => {
 
     const loader = new STLLoader()
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/patients/'+patientId+'/facestl', true);
+    xhr.open('GET', '/patienten/'+patientId+'/facestl', true);
     xhr.responseType = 'arraybuffer';
 
     xhr.onload = function () {
