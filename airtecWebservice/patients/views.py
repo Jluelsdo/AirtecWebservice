@@ -31,14 +31,6 @@ class CreatePatientView(CreateView):
     def form_valid(self, form):
         """Set the created_by field to the current user."""
         form.instance.created_by = self.request.user
-        uploaded_file = self.request.FILES.get('stl_file')
-
-        if uploaded_file:
-            file_path = f'stl/{form.instance.patient_id}.stl'
-            file_path = default_storage.save(file_path, uploaded_file)
-
-            form.instance.stl_file = file_path
-
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -95,13 +87,6 @@ class CreateMaskView(CreateView):
     def get_success_url(self):
         """Return the URL to redirect to after processing a valid form."""
         return reverse_lazy('detail', kwargs={'patient_id': self.kwargs['patient_id']})
-
-def stl_view(request):
-    """
-    Proof of concept for serving STL files.
-    """
-    stl_path = os.path.join(settings.BASE_DIR, 'patients/beispielscan.stl')
-    return FileResponse(open(stl_path, 'rb'), content_type='application/octet-stream')
 
 class STLFileView(View):
     """
