@@ -9,6 +9,9 @@ def validate_no_whitespace(value):
     if any(char.isspace() for char in value):
         raise ValidationError('This field cannot contain whitespace')
 
+def get_patient_facescan_upload_path(instance, filename):
+    return 'patients/stl/{}/facescan/{}'.format(instance.patient_id, filename)
+
 class Patient(models.Model):
     """
     Allgemeine Patienteninformationen.
@@ -26,10 +29,12 @@ class Patient(models.Model):
                 max_length=14, default='pyknisch')
     prothesentraeger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
-    stl_file = models.FileField(upload_to='stl/', blank=True, null=True)
+    stl_file = models.FileField(upload_to=get_patient_facescan_upload_path, blank=True, null=True)
     schlaf_unterkiefer_mm = models.FloatField(blank=True, null=True)
     def __str__(self):
         return self.patient_id
+
+
 
 class Maske(models.Model):
     """
