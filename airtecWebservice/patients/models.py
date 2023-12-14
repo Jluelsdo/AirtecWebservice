@@ -3,6 +3,14 @@ Model file for the patients app.
 """
 #Since the form is used through german speaking countries, all fields are in german.
 from django.db import models
+from django.core.exceptions import ValidationError
+
+def validate_no_whitespace(value):
+    if any(char.isspace() for char in value):
+        raise ValidationError('This field cannot contain whitespace')
+
+def get_patient_facescan_upload_path(instance, filename):
+    return 'patients/stl/{}/facescan/{}'.format(instance.patient_id, filename)
 
 class Patient(models.Model):
     """
@@ -10,7 +18,7 @@ class Patient(models.Model):
     Erforderlich für die Erstellung der Maske.
     Nicht direkt mit sensiblen Patientendaten verbunden, nur über patient_id.
     """
-    patient_id = models.CharField(max_length=100, unique=True)
+    patient_id = models.CharField(max_length=100, unique=True, validators=[validate_no_whitespace])
     groeße = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     gewicht = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     geschlecht = models.CharField(max_length=10)
@@ -21,10 +29,12 @@ class Patient(models.Model):
                 max_length=14, default='pyknisch')
     prothesentraeger = models.BooleanField(default=False)
     prothese = models.CharField(max_length=100, blank=True, null=True)
-    stl_file = models.FileField(upload_to='stl/', blank=True, null=True)
+    stl_file = models.FileField(upload_to=get_patient_facescan_upload_path, blank=True, null=True)
     schlaf_unterkiefer_mm = models.FloatField(blank=True, null=True)
     def __str__(self):
         return self.patient_id
+
+
 
 class Maske(models.Model):
     """
