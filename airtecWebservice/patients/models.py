@@ -3,6 +3,11 @@ Model file for the patients app.
 """
 #Since the form is used through german speaking countries, all fields are in german.
 from django.db import models
+from django.core.exceptions import ValidationError
+
+def validate_no_whitespace(value):
+    if any(char.isspace() for char in value):
+        raise ValidationError('This field cannot contain whitespace')
 
 class Patient(models.Model):
     """
@@ -10,7 +15,7 @@ class Patient(models.Model):
     Erforderlich für die Erstellung der Maske.
     Nicht direkt mit sensiblen Patientendaten verbunden, nur über patient_id.
     """
-    patient_id = models.CharField(max_length=100, unique=True)
+    patient_id = models.CharField(max_length=100, unique=True, validators=[validate_no_whitespace])
     groeße = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     gewicht = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     geschlecht = models.CharField(max_length=10)
