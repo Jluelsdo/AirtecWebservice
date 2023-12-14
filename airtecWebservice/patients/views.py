@@ -1,7 +1,9 @@
 """Views for the patients app."""
 import os
+from typing import Any
 
 from django.core.files.storage import default_storage
+from django.db import models
 
 from django.urls import reverse_lazy
 
@@ -21,7 +23,6 @@ class HomeView(TemplateView):
 class CreatePatientView(CreateView):
     """Create a new patient, display a success message when done."""
     template_name = 'patients/create_patient.html'
-    success_url = '/patients/{patient_id}'
     model = Patient
     fields = ['patient_id', 'groeße', 'gewicht', 'geschlecht', 'alter',
               'andere_informationen', 'gesichtstyp', 'prothesentraeger',
@@ -30,7 +31,6 @@ class CreatePatientView(CreateView):
     def form_valid(self, form):
         """Set the created_by field to the current user."""
         form.instance.created_by = self.request.user
-
         uploaded_file = self.request.FILES.get('stl_file')
 
         if uploaded_file:
@@ -40,6 +40,10 @@ class CreatePatientView(CreateView):
             form.instance.stl_file = file_path
 
         return super().form_valid(form)
+
+    def get_success_url(self):
+            """Return the URL to redirect to after processing a valid form."""
+            return reverse_lazy('detail', kwargs={'patient_id': self.object.patient_id})
 
 class ListPatientView(ListView):
     """List all patients."""
